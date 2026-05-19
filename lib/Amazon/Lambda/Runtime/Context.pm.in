@@ -124,17 +124,21 @@ to retrieve context information for current Lambda invocation.
 Note you can use the I<snake case> version of these methods to
 retrieve the same information.
 
-=head3 functionName
+=over 5
 
-=head3 functionVersion
+=item  functionName
 
-=head3 logGroupName
+=item  functionVersion
 
-=head3 logStreamName
+=item  logGroupName
 
-=head3 memoryLimitInMb
+=item  logStreamName
 
-=head3 deadlineMs
+=item  memoryLimitInMb
+
+=item  deadlineMs
+
+=back
 
 =head2 getRemainingTimeInMillis
 

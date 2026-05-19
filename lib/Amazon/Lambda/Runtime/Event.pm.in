@@ -19,14 +19,12 @@ Readonly::Scalar our $EVENT_SQS         => 'aws:sqs';
 Readonly::Scalar our $EVENT_SNS         => 'aws:sns';
 Readonly::Scalar our $EVENT_S3          => 'aws:s3';
 Readonly::Scalar our $EVENT_EVENTBRIDGE => 'aws:events';
-Readonly::Scalar our $FOO               => 'bar';
 
 our @EXPORT_OK = qw(
   $EVENT_SQS
   $EVENT_SNS
   $EVENT_S3
   $EVENT_EVENTBRIDGE
-  $FOO
 );
 
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
@@ -129,7 +127,7 @@ hashref and returns the appropriate C<Amazon::Lambda::Runtime::Event::*>
 object. If the source is not recognized returns an
 C<Amazon::Lambda::Runtime::Event::Base> instance.
 
-In most cases you will not call this directly — the base class
+In most cases you will not call this directly - the base class
 C<handler> method in C<Amazon::Lambda::Runtime> calls it
 automatically after consulting the event handler registry.
 
@@ -183,15 +181,15 @@ implementations.
 
 =over 4
 
-=item aws:sqs — L<Amazon::Lambda::Runtime::Event::SQS>
+=item aws:sqs - L<Amazon::Lambda::Runtime::Event::SQS>
 
-=item aws:sns — L<Amazon::Lambda::Runtime::Event::SNS>
+=item aws:sns - L<Amazon::Lambda::Runtime::Event::SNS>
 
-=item aws:s3 — L<Amazon::Lambda::Runtime::Event::S3>
+=item aws:s3 - L<Amazon::Lambda::Runtime::Event::S3>
 
-=item aws:events — L<Amazon::Lambda::Runtime::Event::EventBridge>
+=item aws:events - L<Amazon::Lambda::Runtime::Event::EventBridge>
 
-=item unknown — L<Amazon::Lambda::Runtime::Event::Base>
+=item unknown - L<Amazon::Lambda::Runtime::Event::Base>
 
 =back
 

@@ -93,7 +93,7 @@ C<on_notification>. Returns C<{"status":"ok"}>.
 
 Stub method. Override in your subclass.
 
-C<$message> is the decoded message payload — either a hashref if
+C<$message> is the decoded message payload - either a hashref if
 the message was JSON or a plain string otherwise.
 
 C<$sns> is the SNS notification hashref containing C<TopicArn>,

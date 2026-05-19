@@ -3,34 +3,19 @@ project:
   author:
     name: Rob Lauer
     mailto: rlauer@treasurersbriefcase.com
-pm_module: Amazon::Lambda::Runtime
+pm-module: Amazon::Lambda::Runtime
 min-perl-version: 5.010
 dependencies:
   requires: requires
-  test_requires: test-requires
+  test-requires: test-requires
 path:
-  pm_module: lib
-  exe_files: bin
+  pm-module: lib
+  exe-files: bin
   tests: t
 extra-files:
   - ChangeLog
   - share:
       - README.md
-      - Makefile.build
-      - LambdaHandler.pm.in
-      - Dockerfile
-      - policies
-      - cpanfile
-      - cpanfile.snapshot
-      - sqs-test.mk
-      - s3-test.mk
-      - sns-test.mk
-      - streaming-test.mk
-      - eventbridge-test.mk
-      - payload-sns.json
-      - payload.json
-      - version.mk
-      - ecr-create-repo.mk
 resources:
   homepage: http://github.com/rlauer6/Amazon-Lambda-Runtime2.git
   bugtracker:

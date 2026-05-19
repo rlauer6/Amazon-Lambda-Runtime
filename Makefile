@@ -35,7 +35,6 @@ DEPS = \
     $(BIN_FILES) \
     requires \
     test-requires \
-    LambdaHandler.pm.in \
     README.md
 
 all: $(TARBALL)

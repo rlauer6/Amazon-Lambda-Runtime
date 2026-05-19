@@ -112,7 +112,7 @@ C<$detail_type> is the EventBridge event type string, e.g.
 C<Scheduled Event>, C<EC2 Instance State-change Notification>,
 or a custom type from your event bus.
 
-C<$detail> is the event detail hashref — the content varies by
+C<$detail> is the event detail hashref - the content varies by
 event type.
 
 C<$event> is the full EventBridge event hashref including C<source>,

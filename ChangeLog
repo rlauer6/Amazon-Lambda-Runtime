@@ -1,3 +1,65 @@
+Tue May 19 15:42:17 2026  Rob Lauer  <rclauer@gmail.com>
+
+	[2.1.1]:
+	* README.md: generated
+	* VERSION: bump
+	* Makefile: -LambdaHandler.pm.in
+	* buildspec.yml
+	- _ => -
+	- removed artifacts moved to Amazon-Lambda-Runtime-Builder
+	* lib/Amazon/Lambda/Runtime.pm.in
+	(next_event): pretty print content
+	(send_init_error): formattting
+	(send_invocation_error): pass hash, not positional args
+	* lib/Amazon/Lambda/Runtime/Context.pm.in: pod formatting
+	* lib/Amazon/Lambda/Runtime/Event.pm.in
+	- remove $FOO
+	- pod formatting
+	* lib/Amazon/Lambda/Runtime/Event/EventBridge.pm.in: pod tweak
+	* lib/Amazon/Lambda/Runtime/Event/SNS.pm.in: likewise
+	* lib/Amazon/Lambda/Runtime/Event/SQS.pm.in: likewise
+
+	[2.1.1]: moved to Amazon-Lambda-Runtime-Builder
+	* Dockerfile: deleted
+	* LambdaHandler.pm.in: deleted
+	* Makefile.build: deleted
+	* cpanfile: deleted
+	* cpanfile.snapshot: deleted
+	* ecr-create-repo.mk: deleted
+	* eventbridge-test.mk: deleted
+	* payload-sns.json: deleted
+	* payload.json: deleted
+	* policies: deleted
+	* s3-test.mk: deleted
+	* sns-test.mk: deleted
+	* sqs-test.mk: deleted
+	* streaming-test.mk: deleted
+
+Wed Apr  1 07:24:35 2026  Rob Lauer  <rclauer@gmail.com>
+
+	[2.1.0]:
+	* Makefile: remove Lambda.pm.in (moved to builder)
+	* README.md: generated
+	* VERSION: bump minor
+	* lib/Amazon/Lambda/Runtime.pm.in
+	- pod update, move some info to Amazon::Lambda::Runtime::Builder
+	* buildspec.yml
+	- move build files to builders
+	* Dockerfile: moved to builder
+	* cpanfile: likewise
+	* LambdaHandler.pm.in: likewise
+	* Makefile.build: likewise
+	* ecr-create-repo.mk: likewise
+	* eventbridge-test.mk: likewse
+	* payload-sns.json: likewise
+	* payload.json: likewise
+	* policies: likewise
+	* s3-test.mk: likewise
+	* sns-test.mk: likewise
+	* sqs-test.mk: likewise
+	* streaming-test.mk: likewise
+	* cpanfile.snapshot: deleted
+
 Thu Mar 19 15:34:45 2026  Rob Lauer  <rclauer@gmail.com>
 
 	[2.0.1]:

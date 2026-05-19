@@ -91,7 +91,7 @@ Amazon::Lambda::Runtime::Event::SQS - SQS event handler for Lambda
  use Amazon::Lambda::Runtime qw(:all);
 
  use parent qw(Amazon::Lambda::Runtime);
- 
+
  __PACKAGE__->register_event_handler(
    $EVENT_SQS => 'MyApp::SQSHandler'
  );
@@ -106,7 +106,7 @@ unwraps SNS envelopes when present.
 
 Lambda polls the SQS queue on your behalf and delivers batches of
 messages. On successful handler completion Lambda deletes the
-messages automatically — no SQS client is required in your handler.
+messages automatically - no SQS client is required in your handler.
 
 =head1 METHODS
 
@@ -123,7 +123,7 @@ Stub method. Subclass C<Amazon::Lambda::Runtime::Event::SQS> and override
 this to implement your message processing logic.
 
 C<$body> is the decoded message payload. If the message arrived
-via SNS the envelope is already unwrapped — you receive the inner
+via SNS the envelope is already unwrapped - you receive the inner
 payload directly regardless of how the message was sent.
 
 C<$record> is the raw SQS record hashref, available if you need
