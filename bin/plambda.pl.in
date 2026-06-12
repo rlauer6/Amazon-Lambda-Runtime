@@ -16,7 +16,17 @@ sub main {
     die "no LAMBDA_MODULE defined in environment!\n"
       if !$ENV{LAMBDA_MODULE};
 
-    require "$ENV{LAMBDA_MODULE}";
+    my $lambda_module = $ENV{LAMBDA_MODULE};
+
+    if ( $lambda_module =~ /::/xsm ) {
+      $lambda_module =~ s/::/\//xsmg;
+      $lambda_module = "$lambda_module.pm";
+    }
+    elsif ( $lambda_module !~ /[.]pm$/xsm ) {
+      $lambda_module = "$lambda_module.pm";
+    }
+
+    require $lambda_module;
 
     return split /[.]pm\z/xsm, $ENV{LAMBDA_MODULE};
   };
@@ -28,7 +38,9 @@ sub main {
     return 1;
   }
 
-  $ENV{_HANDLER} = "$lambda.handler";
+  print {*STDERR} "invoking $lambda.handler\n";
+
+  local $ENV{_HANDLER} = "$lambda.handler";
 
   return $lambda->new->run;
 }

@@ -1,3 +1,21 @@
+Fri Jun 12 06:33:06 2026  Rob Lauer  <rclauer@gmail.com>
+
+	[2.1.2]:
+	* ChangeLog: modified
+	* VERSION: modified
+	* release-notes.md: new
+	* release-notes/release-notes-2.1.2.md: new
+	* .gitignore: cleaned up, +*.diffs, *.lst
+	* bin/plambda.pl.in
+	- require full path
+	(main): output message
+	* lib/Amazon/Lambda/Runtime.pm.in
+	- ditto for the registered handler class
+	* lib/Amazon/Lambda/Runtime/Event/SQS.pm.in
+	(process)
+	- skip events with no body
+	(_unwrap): return nothing if an s3:TestEvent
+
 Tue May 19 15:42:17 2026  Rob Lauer  <rclauer@gmail.com>
 
 	[2.1.1]:

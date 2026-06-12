@@ -20,6 +20,8 @@ sub process {
 
   for my $record ( @{$records} ) {
     my $body = $self->_unwrap($record);
+    next if !defined $body;
+
     $self->on_message( $body, $record );
   }
 
@@ -38,6 +40,14 @@ sub _unwrap {
 
   return $body
     if !$decoded;
+
+  # S3 sends this automatically when a bucket notification configuration
+  # is saved - it has no Records key and isn't a real object event
+  if ( ( $decoded->{Event} // q{} ) eq 's3:TestEvent' ) {
+    $self->get_logger->info('ignoring s3:TestEvent');
+    $self->get_logger->debug( sub { return Dumper( [ s3_test_event => $decoded ] ) } );
+    return;
+  }
 
   # unwrap SNS envelope if present
   if ( ( $decoded->{Type} // q{} ) eq 'Notification' ) {

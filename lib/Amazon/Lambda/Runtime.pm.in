@@ -81,6 +81,12 @@ sub handler {
     $defaults{$source} // 'Amazon::Lambda::Runtime::Event::Base';
     };
 
+  # ensure the class is loaded
+  if ( !$handler_class->can('new') ) {
+    my $file = $handler_class =~ s{::}{/}gr . '.pm';
+    require $file;
+  }
+
   $self->get_logger->info( sprintf 'source=%s handler_class=%s', $source // 'undef', $handler_class // 'undef' );
 
   return $handler_class->new(
