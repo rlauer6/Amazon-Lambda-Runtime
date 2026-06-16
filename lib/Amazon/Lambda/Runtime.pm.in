@@ -75,11 +75,12 @@ sub handler {
 
   my $source = Amazon::Lambda::Runtime::Event->detect_source($event);
 
-  my $handler_class = $EVENT_HANDLER_REGISTRY{ ref $self }{$source}  # registered handler
-    // do {  # factory default
+  my $handler_class = $EVENT_HANDLER_REGISTRY{ ref $self }{$source};  # registered handler
+
+  if ( !$handler_class ) {
     my %defaults = Amazon::Lambda::Runtime::Event->defaults;
-    $defaults{$source} // 'Amazon::Lambda::Runtime::Event::Base';
-    };
+    $handler_class = $defaults{$source} // 'Amazon::Lambda::Runtime::Event::Base';
+  }
 
   # ensure the class is loaded
   if ( !$handler_class->can('new') ) {
@@ -119,7 +120,7 @@ sub new {
 
   $self->set_handler($handler);
 
-  $self->get_logger->debug( 'Perl Lambda Runtime: v%s, perl: %vd', $VERSION, $PERL_VERSION );
+  $self->get_logger->info( sprintf 'Perl Lambda Runtime: v%s, perl: %vd', $VERSION, $PERL_VERSION );
 
   $self->get_logger->debug( sub { return Dumper( [ handler => $handler ] ) } );
 
