@@ -1,8 +1,9 @@
+---
 project:
   description: Amazon::Lambda::Runtime
   author:
     name: Rob Lauer
-    mailto: rlauer@treasurersbriefcase.com
+    mailto: rclauer@gmail.com
 pm-module: Amazon::Lambda::Runtime
 min-perl-version: 5.010
 dependencies:
@@ -17,11 +18,11 @@ extra-files:
   - share:
       - README.md
 resources:
-  homepage: http://github.com/rlauer6/Amazon-Lambda-Runtime2.git
   bugtracker:
-    web: http://github.com/rlauer6/Amazon-Lambda-Runtime2/issues
-    mailto: rlauer@treasurersbriefcase.com
+    mailto: rclauer@gmail.com
+    web: https://github.com/rlauer6/Amazon-Lambda-Runtime/issues
+  homepage: https://github.com/rlauer6/Amazon-Lambda-Runtime
   repository:
-    url: git://github.com/rlauer6/Amazon-Lambda-Runtime2.git
-    web: http://github.com/rlauer6/Amazon-Lambda-Runtime2.git
-    type: 'git'
+    type: git
+    url: git@github.com:rlauer6/Amazon-Lambda-Runtime.git
+    web: https://github.com/rlauer6/Amazon-Lambda-Runtime

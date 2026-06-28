@@ -5,12 +5,16 @@ use warnings;
 
 use parent qw(Amazon::Lambda::Runtime::Event::Base);
 
-use CLI::Simple::Constants qw(:booleans :chars);
 use Data::Dumper;
 use English qw(-no_match_vars);
 use JSON::PP;
 use MIME::Base64 qw(decode_base64);
 use URI::Escape qw(uri_unescape);
+use Readonly;
+
+Readonly::Scalar our $TRUE  => 1;
+Readonly::Scalar our $FALSE => 0;
+Readonly::Scalar our $EMPTY => q{};
 
 our $VERSION = '@PACKAGE_VERSION@';
 
@@ -36,6 +40,7 @@ sub _parse_body {
   for my $pair ( split /&/xsm, $body ) {
     my ( $k, $v ) = split /=/xsm, $pair, 2;
     next if !defined $k;
+
     $params{ uri_unescape($k) } = uri_unescape( $v // $EMPTY );
   }
 
@@ -49,7 +54,7 @@ sub process {
 
   my $event  = $self->get_event;
   my $method = $event->{httpMethod} // 'GET';
-  my $path   = $event->{path}       // '/';
+  my $path   = $event->{path}       // q{/};
 
   $self->get_logger->info( sprintf 'ALB %s %s', $method, $path );
 
@@ -58,11 +63,12 @@ sub process {
   my $result = eval { $self->on_request( $method, $path, $params, $event ) };
 
   if ($EVAL_ERROR) {
-    $self->get_logger->error("on_request failed: $EVAL_ERROR");
+    $self->get_logger->error( sprintf 'on_request failed: %s', $EVAL_ERROR );
+
     return encode_json(
       $self->_alb_response(
         500,
-        { error   => 'internal server error',
+        { error   => _status_description(500),
           message => $EVAL_ERROR
         }
       )
@@ -77,9 +83,18 @@ sub on_request {
 ########################################################################
   my ( $self, $method, $path, $params, $event ) = @_;
 
-  $self->get_logger->warn( sprintf 'on_request() not implemented in %s', ref $self );
+  my $message = sprintf 'on_request() not implemented in %s', ref $self;
 
-  return encode_json( $self->_alb_response( 404, { error => 'not found' } ) );
+  $self->get_logger->warn($message);
+
+  return encode_json(
+    $self->_alb_response(
+      404,
+      { error   => _status_description(404),
+        message => $message,
+      }
+    )
+  );
 }
 
 ########################################################################

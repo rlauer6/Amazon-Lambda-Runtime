@@ -1,3 +1,29 @@
+Sun Jun 28 09:44:48 2026  Rob Lauer  <rclauer@gmail.com>
+
+	[2.1.5]:
+	* release-notes.md: updated
+	* release-notes/release-notes-2.1.5.md: new
+	* Makefile
+	- from CPAN::Maker::Bootstrapper
+	* .includes/git.mk: likewise
+	* .includes/help.mk: likewise
+	* .includes/perl.mk: likewise
+	* .includes/release-notes.mk: likewise
+	* .includes/update.mk: likewise
+	* .includes/upgrade.mk: likewise
+	* .includes/version.mk: likewise
+	* README.md: generated
+	* buildspec.yml
+	- _ => -
+	- Runtime2 => Runtime
+	* requires
+	- remove dependency on CLI::Simple
+	* lib/Amazon/Lambda/Runtime/Event/ALB.pm.in: likewise
+	* test-requires: +Test::More
+	* cpanfile: new
+	* t/00-amazon-lambda-runtime.t: new
+	* .gitignore: + *.tmpl
+
 Sun Jun 28 09:16:13 2026  Rob Lauer  <rclauer@gmail.com>
 
 	[2.1.4]:
@@ -9,7 +35,6 @@ Sun Jun 28 09:16:13 2026  Rob Lauer  <rclauer@gmail.com>
 	* lib/Amazon/Lambda/Runtime/Event.pm.in: add aws:alb event type
 	* requires
 	- +CLI::Simple 2.0.6, JSON:PP, URI::Escape, HTTP::Tiny
-
 
 Tue Jun 16 13:44:54 2026  Rob Lauer  <rclauer@gmail.com>
 

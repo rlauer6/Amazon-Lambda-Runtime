@@ -1,3 +1,32 @@
+# Table of Contents
+
+* [NAME](#name)
+* [SYNOPSIS](#synopsis)
+* [DESCRIPTION](#description)
+  * [The Execution Lifecycle](#the-execution-lifecycle)
+  * [Error Handling](#error-handling)
+  * [Design Philosophy](#design-philosophy)
+  * [Event Framework](#event-framework)
+  * [Streaming Responses](#streaming-responses)
+  * [AWS X-Ray](#aws-x-ray)
+  * [Deploying](#deploying)
+* [METHODS](#methods)
+  * [new](#new)
+  * [handler](#handler)
+  * [register\_event\_handler](#register\event\handler)
+  * [get\_logger](#get\logger)
+  * [run](#run)
+  * [send\_invocation\_error](#send\invocation\error)
+  * [send\_init\_error](#send\init\error)
+  * [next\_event](#next\event)
+  * [send\_invocation\_response](#send\invocation\response)
+  * [send\_streaming\_response](#send\streaming\response)
+* [NOTES](#notes)
+  * [Logging](#logging)
+  * [AWS Reference Implementation](#aws-reference-implementation)
+* [SEE ALSO](#see-also)
+* [AUTHOR](#author)
+* [LICENSE](#license)
 # NAME
 
 Amazon::Lambda::Runtime - Perl runtime for AWS Lambda container images

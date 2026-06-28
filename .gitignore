@@ -11,3 +11,4 @@ resources
 *.diffs
 *.lst
 bin/bootstrap
+*.tmpl

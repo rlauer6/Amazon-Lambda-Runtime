@@ -1,0 +1,10 @@
+requires "Test::More", "";
+requires "Class::Accessor::Fast", "0.51";
+requires "Date::Format", "2.24";
+requires "HTTP::Tiny", "0.088";
+requires "JSON", "4.10";
+requires "JSON::PP", "4.16";
+requires "Log::Log4perl", "1.57";
+requires "Log::Log4perl::Level", "0";
+requires "Readonly", "2.05";
+requires "URI::Escape", "5.34";
