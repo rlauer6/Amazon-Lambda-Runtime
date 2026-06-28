@@ -16,6 +16,7 @@ PERL_MODULES = \
     lib/Amazon/Lambda/Runtime.pm \
     lib/Amazon/Lambda/Runtime/Context.pm \
     lib/Amazon/Lambda/Runtime/Event.pm \
+    lib/Amazon/Lambda/Runtime/Event/ALB.pm \
     lib/Amazon/Lambda/Runtime/Event/Base.pm \
     lib/Amazon/Lambda/Runtime/Event/S3.pm \
     lib/Amazon/Lambda/Runtime/Event/SNS.pm \

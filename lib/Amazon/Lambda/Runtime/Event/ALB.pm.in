@@ -1,0 +1,227 @@
+package Amazon::Lambda::Runtime::Event::ALB;
+
+use strict;
+use warnings;
+
+use parent qw(Amazon::Lambda::Runtime::Event::Base);
+
+use CLI::Simple::Constants qw(:booleans :chars);
+use Data::Dumper;
+use English qw(-no_match_vars);
+use JSON::PP;
+use MIME::Base64 qw(decode_base64);
+use URI::Escape qw(uri_unescape);
+
+our $VERSION = '@PACKAGE_VERSION@';
+
+########################################################################
+sub _build_records { return [] }
+########################################################################
+
+########################################################################
+sub _parse_body {
+########################################################################
+  my ($self) = @_;
+
+  my $event = $self->get_event;
+
+  my $body = $event->{body} // $EMPTY;
+
+  if ( $event->{isBase64Encoded} ) {
+    $body = decode_base64($body);
+  }
+
+  my %params;
+
+  for my $pair ( split /&/xsm, $body ) {
+    my ( $k, $v ) = split /=/xsm, $pair, 2;
+    next if !defined $k;
+    $params{ uri_unescape($k) } = uri_unescape( $v // $EMPTY );
+  }
+
+  return \%params;
+}
+
+########################################################################
+sub process {
+########################################################################
+  my ($self) = @_;
+
+  my $event  = $self->get_event;
+  my $method = $event->{httpMethod} // 'GET';
+  my $path   = $event->{path}       // '/';
+
+  $self->get_logger->info( sprintf 'ALB %s %s', $method, $path );
+
+  my $params = $self->_parse_body;
+
+  my $result = eval { $self->on_request( $method, $path, $params, $event ) };
+
+  if ($EVAL_ERROR) {
+    $self->get_logger->error("on_request failed: $EVAL_ERROR");
+    return encode_json(
+      $self->_alb_response(
+        500,
+        { error   => 'internal server error',
+          message => $EVAL_ERROR
+        }
+      )
+    );
+  }
+
+  return $result;
+}
+
+########################################################################
+sub on_request {
+########################################################################
+  my ( $self, $method, $path, $params, $event ) = @_;
+
+  $self->get_logger->warn( sprintf 'on_request() not implemented in %s', ref $self );
+
+  return encode_json( $self->_alb_response( 404, { error => 'not found' } ) );
+}
+
+########################################################################
+sub _alb_response {
+########################################################################
+  my ( $self, $status, $body ) = @_;
+
+  $self->get_logger->debug(
+    Dumper(
+      [ status => $status,
+        body   => $body
+      ]
+    )
+  );
+
+  return {
+    statusCode        => $status,
+    statusDescription => _status_description($status),
+    headers           => { 'Content-Type' => 'application/json' },
+    isBase64Encoded   => JSON::PP::false,
+    body              => ref $body ? encode_json($body) : $body,
+  };
+}
+
+########################################################################
+sub _status_description {
+########################################################################
+  my ($status) = @_;
+
+  my %descriptions = (
+    200 => '200 OK',
+    400 => '400 Bad Request',
+    404 => '404 Not Found',
+    500 => '500 Internal Server Error',
+  );
+
+  return $descriptions{$status} // "$status Unknown";
+}
+
+1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Amazon::Lambda::Runtime::Event::ALB - ALB event handler for Lambda
+
+=head1 SYNOPSIS
+
+ package MyApp::ALBHandler;
+
+ use parent qw(Amazon::Lambda::Runtime::Event::ALB);
+
+ sub on_request {
+   my ($self, $method, $path, $params, $event) = @_;
+
+   if ( $method eq 'POST' && $path eq '/build' ) {
+     my $service = $params->{service} or return $self->_alb_response(400, { error => 'service required' });
+     # ...do work...
+     return encode_json( $self->_alb_response(200, { status => 'ok' }) );
+   }
+
+   return encode_json( $self->_alb_response(404, { error => 'not found' }) );
+ }
+
+ 1;
+
+ package MyWorker;
+
+ use parent qw(Amazon::Lambda::Runtime);
+
+ __PACKAGE__->register_event_handler(
+   'aws:alb' => 'MyApp::ALBHandler'
+ );
+
+ 1;
+
+=head1 DESCRIPTION
+
+Handles ALB HTTP events delivered to a Lambda function. Parses the
+request body, detects the HTTP method and path, and calls
+C<on_request> for dispatch. The response must conform to the ALB
+Lambda response format (C<statusCode>, C<statusDescription>,
+C<headers>, C<isBase64Encoded>, C<body>).
+
+=head1 METHODS
+
+=head2 process
+
+Parses the ALB event, calls C<on_request>, and returns the ALB
+response JSON. Any exception from C<on_request> is caught and
+returned as a 500 response.
+
+=head2 on_request
+
+ on_request($method, $path, $params, $event)
+
+Stub method. Override in your subclass.
+
+C<$method> is the HTTP method (C<GET>, C<POST>, etc.).
+
+C<$path> is the request path (e.g. C</build>).
+
+C<$params> is a hashref of urlencoded body parameters.
+
+C<$event> is the raw ALB event hashref.
+
+=head2 _alb_response
+
+ $self->_alb_response($status_code, $body)
+
+Helper that builds a valid ALB Lambda response hashref. C<$body> may
+be a hashref (JSON-encoded automatically) or a plain string.
+
+=head1 ALB EXAMPLE EVENT STRUCTURE
+
+ {
+   "requestContext": {
+     "elb": {
+       "targetGroupArn": "arn:aws:elasticloadbalancing:..."
+     }
+   },
+   "httpMethod": "POST",
+   "path": "/build",
+   "queryStringParameters": {},
+   "headers": {
+     "content-type": "application/x-www-form-urlencoded"
+   },
+   "body": "service=sqs&module_name=SQS",
+   "isBase64Encoded": false
+ }
+
+=head1 AUTHOR
+
+Rob Lauer - <rlauer@treasurersbriefcase.com>
+
+=head1 LICENSE
+
+(c) Copyright 2019-2026 Robert C. Lauer. All rights reserved. This
+module is free software. It may be used, redistributed and/or
+modified under the same terms as Perl itself.
+
+=cut

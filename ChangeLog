@@ -1,3 +1,16 @@
+Sun Jun 28 09:16:13 2026  Rob Lauer  <rclauer@gmail.com>
+
+	[2.1.4]:
+	* release-notes.md: updated
+	* release-notes/release-notes-2.1.4.md: new
+	* lib/Amazon/Lambda/Runtime/Event/ALB.pm.in: new
+	* Makefile: add above to build
+	* VERSION: bump
+	* lib/Amazon/Lambda/Runtime/Event.pm.in: add aws:alb event type
+	* requires
+	- +CLI::Simple 2.0.6, JSON:PP, URI::Escape, HTTP::Tiny
+
+
 Tue Jun 16 13:44:54 2026  Rob Lauer  <rclauer@gmail.com>
 
 	[2.1.3]:
