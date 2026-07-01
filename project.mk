@@ -42,7 +42,8 @@ alr-base: cpanfile $(PERL_VERSION_FILE) ## build and push the alr-base Lambda ru
 	    echo "ERROR: could not determine ECR URI for $(ALR_BASE_IMAGE)" >&2; exit 1; \
 	}; \
 	cp cpanfile docker/cpanfile; \
-	docker build \
+	echo 'requires "Amazon::Lambda::Runtime", "0";' >>docker/cpanfile; \
+	docker build $(NOCACHE) \
 	    -t $(ALR_BASE_IMAGE):$(ALR_BASE_TAG) \
 	    -t $(ALR_BASE_IMAGE):latest \
 	    -f docker/Dockerfile docker/ || { rm -f docker/cpanfile; exit 1; }; \

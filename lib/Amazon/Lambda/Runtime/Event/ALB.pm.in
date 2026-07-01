@@ -111,7 +111,7 @@ sub _alb_response {
   );
 
   return {
-    statusCode        => $status,
+    statusCode        => $status + 0,
     statusDescription => _status_description($status),
     headers           => { 'Content-Type' => 'application/json' },
     isBase64Encoded   => JSON::PP::false,

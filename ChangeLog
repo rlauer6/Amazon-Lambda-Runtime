@@ -1,3 +1,19 @@
+Wed Jul  1 18:04:50 2026  Rob Lauer  <rclauer@gmail.com>
+
+	[2.2.1]:
+	* .includes/perl.mk: updated by CPAN::Maker::Bootstrapper
+	* .includes/release-notes.mk: likewise
+	* Makefile: likewise
+	* .gitignore: +*.crit, *.tdy
+	* VERSION: bump
+	* release-notes.md: updated
+	* release-notes/release-notes-2.2.1.md: new
+	* lib/Amazon/Lambda/Runtime/Event/ALB.pm.in
+	(_alb_response):
+	- force statusCode to be numeric
+	* project.mk
+	- add Amazon::Lambda::Runtime to cpanfile
+
 Mon Jun 29 09:23:07 2026  Rob Lauer  <rclauer@gmail.com>
 
 	[2.2.0]:
