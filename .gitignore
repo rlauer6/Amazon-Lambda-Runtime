@@ -15,3 +15,15 @@ resources
 bin/bootstrap
 *.tmpl
 *.*perl-version
+**/*.checked
+**/*.raw
+**/*.sh
+*-review-2*.annotate
+*-review-2*.code
+*-review-2*.pod
+buildspec.yml.current
+buildspec.yml.tmpl
+module.pm.tmpl
+test.t.tmpl
+extra-files.mk
+local/**

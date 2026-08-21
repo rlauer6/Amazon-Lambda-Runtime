@@ -11,6 +11,7 @@ use JSON::PP;
 use MIME::Base64 qw(decode_base64);
 use URI::Escape qw(uri_unescape);
 use Readonly;
+use Scalar::Util qw(blessed);
 
 Readonly::Scalar our $TRUE  => 1;
 Readonly::Scalar our $FALSE => 0;
@@ -115,7 +116,7 @@ sub _alb_response {
     statusDescription => _status_description($status),
     headers           => { 'Content-Type' => 'application/json' },
     isBase64Encoded   => JSON::PP::false,
-    body              => ref $body ? encode_json($body) : $body,
+    body              => _error_body($body),
   };
 }
 
@@ -134,7 +135,64 @@ sub _status_description {
   return $descriptions{$status} // "$status Unknown";
 }
 
+# one configured encoder: convert_blessed honors a TO_JSON hook if the
+# class has one; allow_blessed stops a stray nested object from throwing;
+# canonical gives a stable, byte-for-byte error body
+my $JSON = JSON::PP->new->utf8->canonical->allow_blessed->convert_blessed;
+
+########################################################################
+sub _error_body {
+########################################################################
+  my ($body) = @_;
+
+  return $body
+    if !ref $body;
+
+  # a bare blessed exception would encode to null under allow_blessed -
+  # pull its message out first so it survives
+  if ( blessed $body && !$body->can('TO_JSON') ) {
+    $body = { errorMessage => _exception_message($body) };
+  }
+
+  # guard the encode itself: nothing above covers a circular ref or a
+  # TO_JSON that throws
+  my $json = eval { $JSON->encode($body) };
+
+  return $json
+    if defined $json;
+
+  # last resort - a fixed, non-circular, plain-string shape that cannot
+  # fail to encode, so the error path never throws
+  return $JSON->encode( { errorMessage => _exception_message($body) } );
+}
+
+########################################################################
+sub _exception_message {
+########################################################################
+  my ($err) = @_;
+
+  require overload;
+
+  if ( blessed $err && overload::Method( $err, q{""} ) ) {
+    my $str = eval {"$err"};
+    return $str
+      if defined $str;
+  }
+
+  if ( blessed $err ) {
+    for my $method (qw(get_message_raw get_message message error as_string)) {
+      my $str = eval { $err->$method };
+      return $str
+        if defined $str;
+    }
+  }
+
+  return "$err";  # ref-address string for a plain/circular ref - always safe
+}
+
 1;
+
+## no critic
 
 __END__
 
