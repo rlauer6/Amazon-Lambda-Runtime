@@ -106,7 +106,7 @@ Amazon::Lambda::Runtime::Context
 
 =head1 SYNOPSIS
 
- my $context = Amazon::Lambda::Runtime::Context->new({ headers => });
+ my $context = Amazon::Lambda::Runtime::Context->new({ headers => {...} });
 
 Provides the Lambda C<context> object to Lambda handlers.  Used
 internally by C<Amazon::Lambda::Runtime> and should not be normally
@@ -121,22 +121,27 @@ to retrieve context information for current Lambda invocation.
 
 =head2 Context Attribute Getter Methods
 
-Note you can use the I<snake case> version of these methods to
-retrieve the same information.
+Both AWS-style and snake-case getter methods are provided.
 
 =over 5
 
-=item  functionName
+=item get_awsRequestId / get_aws_request_id
 
-=item  functionVersion
+=item get_clientContext / get_client_context
 
-=item  logGroupName
+=item get_functionName / get_function_name
 
-=item  logStreamName
+=item get_functionVersion / get_function_version
 
-=item  memoryLimitInMb
+=item get_invokedFunctionArn / get_invoked_function_arn
 
-=item  deadlineMs
+=item get_logGroupName / get_log_group_name
+
+=item get_logStreamName / get_log_stream_name
+
+=item get_memoryLimitInMB / get_memory_limit_in_mb
+
+=item get_deadlineMS / get_deadline_ms
 
 =back
 

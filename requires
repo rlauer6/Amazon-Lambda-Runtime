@@ -4,6 +4,5 @@ HTTP::Tiny 0.088
 JSON 4.10
 JSON::PP 4.16
 Log::Log4perl 1.57
-Log::Log4perl::Level 0
 Readonly 2.05
 URI::Escape 5.34

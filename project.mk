@@ -53,3 +53,7 @@ alr-base: cpanfile $(PERL_VERSION_FILE) ## build and push the alr-base Lambda ru
 	docker push $$ecr_uri:latest; \
 	docker push $$ecr_uri:$(ALR_BASE_TAG); \
 	echo "Pushed $(ALR_BASE_IMAGE):$(ALR_BASE_TAG)"
+
+.PHONY: install
+install: $(TARBALL)
+	cpanm -n -v -l $(HOME) $<

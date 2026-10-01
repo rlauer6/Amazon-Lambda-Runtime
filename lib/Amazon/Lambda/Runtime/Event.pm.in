@@ -23,11 +23,11 @@ Readonly::Scalar our $EVENT_EVENTBRIDGE => 'aws:events';
 Readonly::Scalar our $EVENT_ALB         => 'aws:alb';
 
 our @EXPORT_OK = qw(
-  $EVENT_SQS
-  $EVENT_SNS
-  $EVENT_S3
-  $EVENT_EVENTBRIDGE
   $EVENT_ALB
+  $EVENT_EVENTBRIDGE
+  $EVENT_S3
+  $EVENT_SNS
+  $EVENT_SQS
 );
 
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
@@ -185,9 +185,23 @@ hashref. Returns an empty string if the source cannot be determined.
 Available as a class method for use in custom C<handler>
 implementations.
 
-=head2 Supported Event Sources
+=head2 get_headers
+
+ $headers = $event_obj->get_headers;
+ $value   = $event_obj->get_headers($name);
+
+Returns the request headers from the raw event. With no argument,
+returns the complete headers hashref. When C<$name> is supplied,
+returns the value of that header using a lowercase header-name
+lookup.
+
+Returns C<undef> if the event contains no C<headers> member.
+
+=head1 SUPPORTED EVENT SOURCES
 
 =over 4
+
+=item aws:alb - L<Amazon::Lambda::Runtime::Event::ALB>
 
 =item aws:sqs - L<Amazon::Lambda::Runtime::Event::SQS>
 

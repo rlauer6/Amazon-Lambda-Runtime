@@ -59,8 +59,9 @@ dependencies via a standard `cpanfile`.
 
 ## The Execution Lifecycle
 
-The runtime is invoked by the `bootstrap` script, which calls the
-`plambda.pl` driver. The driver performs the following steps:
+The `bootstrap` script invokes `plambda.pl`. `LAMBDA_MODULE` identifies the
+Perl class implementing the Lambda function; the driver loads that class,
+sets `_HANDLER` to its `handler` method, and enters the runtime event loop.
 
 1. **Initialization** - locates your handler module via the `LAMBDA_MODULE`
 environment variable and instantiates it.
@@ -100,7 +101,7 @@ distribution does.
 ## Event Framework
 
 `Amazon::Lambda::Runtime` ships a structured event dispatch framework
-covering the four most common Lambda event sources: SQS, SNS, S3, and
+covering the most common Lambda event sources: ALB, SQS, SNS, S3, and
 EventBridge. The base `handler` method detects the event source and
 dispatches to the appropriate handler class via a registry.
 
@@ -346,6 +347,16 @@ and IAM permission checker
 [Amazon::Lambda::Runtime::Writer](https://metacpan.org/pod/Amazon%3A%3ALambda%3A%3ARuntime%3A%3AWriter) - streaming response writer
 
 [Amazon::Lambda::Runtime::Event](https://metacpan.org/pod/Amazon%3A%3ALambda%3A%3ARuntime%3A%3AEvent) - event dispatch framework
+
+[Amazon::Lambda::Runtime::Event::ALB](https://metacpan.org/pod/Amazon%3A%3ALambda%3A%3ARuntime%3A%3AEvent%3A%3AALB) - event handler class for ALB
+
+[Amazon::Lambda::Runtime::Event::EventBridge](https://metacpan.org/pod/Amazon%3A%3ALambda%3A%3ARuntime%3A%3AEvent%3A%3AEventBridge) - event handler class for EventBridge
+
+[Amazon::Lambda::Runtime::Event::S3](https://metacpan.org/pod/Amazon%3A%3ALambda%3A%3ARuntime%3A%3AEvent%3A%3AS3) - event handler class for S3
+
+[Amazon::Lambda::Runtime::Event::SNS](https://metacpan.org/pod/Amazon%3A%3ALambda%3A%3ARuntime%3A%3AEvent%3A%3ASNS) - event handler class for SNS
+
+[Amazon::Lambda::Runtime::Event::SQS](https://metacpan.org/pod/Amazon%3A%3ALambda%3A%3ARuntime%3A%3AEvent%3A%3ASQS) - event handler class for SQS
 
 [Amazon::Lambda::Runtime::Context](https://metacpan.org/pod/Amazon%3A%3ALambda%3A%3ARuntime%3A%3AContext) - Lambda context object
 

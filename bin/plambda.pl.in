@@ -59,12 +59,14 @@ plambda.pl
 
 =head1 SYNOPSIS
 
- plambda.pl $module
+ LAMBDA_MODULE=My::Lambda plambda.pl
 
 =head1 DESCRIPTION
 
-Stub driver that invokes your AWS Lambda method.  Part of the Perl
-Lambda Runtime system.
+Runtime driver used by C<bootstrap>. Loads the Perl module named by
+the C<LAMBDA_MODULE> environment variable, sets C<_HANDLER> to the
+module's C<handler> method, constructs the runtime object, and enters
+the Lambda Runtime API event loop.
 
 =head1 AUTHOR
 

@@ -17,7 +17,14 @@ use Scalar::Util qw(reftype);
 
 use parent qw(Class::Accessor::Fast Exporter);
 
-our @EXPORT_OK   = qw($EVENT_SQS $EVENT_SNS $EVENT_S3 $EVENT_EVENTBRIDGE);
+our @EXPORT_OK = qw(
+  $EVENT_ALB
+  $EVENT_EVENTBRIDGE
+  $EVENT_S3
+  $EVENT_SNS
+  $EVENT_SQS
+);
+
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 __PACKAGE__->follow_best_practice;
@@ -190,7 +197,7 @@ sub run {
         $self->get_logger->debug('streaming response');
         $self->send_streaming_response($response);
       }
-      elsif ($response) {
+      elsif ( defined $response ) {
         $self->get_logger->debug( sub { return Dumper( [ response => $response ] ) } );
         $self->send_invocation_response($response);
       }
@@ -418,10 +425,16 @@ is designed for a B<container-first deployment model>. You can use any
 Linux base image such as C<debian:trixie-slim> and manage your
 dependencies via a standard C<cpanfile>.
 
+C<Amazon::Lambda::Runtime> can be used directly to implement Perl Lambda
+functions and is also the runtime foundation used by
+L<Amazon::Lambda::Runtime::Builder>, which provides higher-level tooling
+for building and packaging Perl Lambda applications.
+
 =head2 The Execution Lifecycle
 
-The runtime is invoked by the C<bootstrap> script, which calls the
-C<plambda.pl> driver. The driver performs the following steps:
+The C<bootstrap> script invokes C<plambda.pl>. C<LAMBDA_MODULE> identifies the
+Perl class implementing the Lambda function; the driver loads that class,
+sets C<_HANDLER> to its C<handler> method, and enters the runtime event loop.
 
 =over 4
 
@@ -482,7 +495,7 @@ distribution does.
 =head2 Event Framework
 
 C<Amazon::Lambda::Runtime> ships a structured event dispatch framework
-covering the four most common Lambda event sources: SQS, SNS, S3, and
+covering the most common Lambda event sources: ALB, SQS, SNS, S3, and
 EventBridge. The base C<handler> method detects the event source and
 dispatches to the appropriate handler class via a registry.
 
@@ -755,6 +768,16 @@ and IAM permission checker
 L<Amazon::Lambda::Runtime::Writer> - streaming response writer
 
 L<Amazon::Lambda::Runtime::Event> - event dispatch framework
+
+L<Amazon::Lambda::Runtime::Event::ALB> - event handler class for ALB
+
+L<Amazon::Lambda::Runtime::Event::EventBridge> - event handler class for EventBridge
+
+L<Amazon::Lambda::Runtime::Event::S3> - event handler class for S3
+
+L<Amazon::Lambda::Runtime::Event::SNS> - event handler class for SNS
+
+L<Amazon::Lambda::Runtime::Event::SQS> - event handler class for SQS
 
 L<Amazon::Lambda::Runtime::Context> - Lambda context object
 

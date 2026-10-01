@@ -1,3 +1,29 @@
+Thu Oct  1 16:03:35 2026  Rob Lauer  <rclauer@gmail.com>
+
+	[2.2.3]:
+	* release-notes.md: updated
+	* release-notes/release-notes-2.2.3.md: new
+	* .includes/bootstrap.mk: added by CPAN::Maker::Bootstrapper
+	* .includes/publish.mk: likewise
+	* .gitignore: updated by CPAN::Maker::Bootstrapper
+	* .includes/local.mk: likewise
+	* .includes/perl.mk: likewise
+	* .includes/update.mk: likewise
+	* Makefile: likewise
+	* requires
+	- remove packages that are included in packages already listed
+	* test-requires: -Test::More is core
+	* project.mk
+	(install): new
+	* bin/plambda.pl.in: POD update
+	* lib/Amazon/Lambda/Runtime/Context.pm.in: likewise
+	* lib/Amazon/Lambda/Runtime/Event.pm.in: likewise
+	* lib/Amazon/Lambda/Runtime.pm.in
+	- likewise
+	- add $EVENT_ALB to export list
+	(run)
+	- return $response if defined
+
 Fri Aug 21 11:04:48 2026  Rob Lauer  <rclauer@gmail.com>
 
 	[2.2.2]:
@@ -49,7 +75,7 @@ Mon Jun 29 09:23:07 2026  Rob Lauer  <rclauer@gmail.com>
 	* release-notes.md: updated
 	* release-notes/release-notes-2.2.0.md: new
 	* .gitignore: +*.*perl-version
-	* VERSION: modified
+	* VERSION: bump
 	* docker/Dockerfile: new
 	* project.mk: new
 
